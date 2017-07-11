@@ -3,7 +3,7 @@ before_install:
   texlive-latex-extra texlive-fonts-extra texlive-latex-recommended dvipng
 script:
 - mkdir _build
-- pdflatex -output-directory _build --jobname=reglement_interieur règlement_intérieur.tex
+- pdflatex -output-directory _build --jobname=reglement_interieur ReglementIntérieur.tex
 deploy:
   provider: releases
   api_key:
