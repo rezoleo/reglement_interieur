@@ -1,4 +1,4 @@
-Règlement inétrieur
+Règlement intérieur
 ===================
 
 [![Build Status](https://travis-ci.org/rezoleo/reglement_interieur.svg?branch=master)](https://travis-ci.org/rezoleo/reglement_interieur)
