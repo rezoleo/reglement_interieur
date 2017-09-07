@@ -3,7 +3,7 @@ before_install:
   texlive-latex-extra texlive-fonts-extra texlive-latex-recommended dvipng texlive-lang-french latexmk
 script:
 - mkdir _build
-- latexmk -p -output-directory _build --jobname=reglement_interieur ReglementInterieur.tex
+- latexmk -p -output-directory=_build -jobname=reglement_interieur ReglementInterieur.tex
 deploy:
   provider: releases
   api_key:
