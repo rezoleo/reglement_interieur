@@ -1,4 +1,4 @@
-name: 'Build LaTex Document'
+name: Build LaTeX document
 
 on:
   push:
@@ -11,50 +11,35 @@ permissions:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
-      #Checks-out the repository
-      - name: Checkout
-        uses: actions/checkout@v3
+      - name: Set up Git repository
+        uses: actions/checkout@v4
 
-      #Enable cache
-      - uses: actions/cache@v3
-        name: Tectonic Cache
+      - name: Compile LaTeX document
+        uses: xu-cheng/latex-action@v3
         with:
-          path: ~/.cache/Tectonic
-          key: ${{ runner.os }}-tectonic-${{ hashFiles('**/*.tex') }}
-          restore-keys: |
-            ${{ runner.os }}-tectonic-
-      
-      # Setup tectonic
-      - name: Install Tectonic
-        uses: wtfjoke/setup-tectonic@e61d40cc462e10ce897e140d3ddc8fa76ac55a5f # v2
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          tectonic-version: 0.14.1
-      
-      # Run tectonic to compile document
-      - name: Compile TeX file
-        run: tectonic ReglementInterieur.tex
+          root_file: ReglementInterieur.tex
+          extra_fonts: ./fonts/*.ttf
+          latexmk_use_xelatex: true
 
-      
-      - name: Upload artifact
-        uses: actions/upload-artifact@v3
+      - name: Upload PDF file
+        uses: actions/upload-artifact@v4
         with:
-          name: PDF file
+          name: Compiled LaTeX document
           path: "*.pdf"
           if-no-files-found: error
           retention-days: 5
 
       # Upload pdf file in GitHub release
       - if: ${{ github.event_name == 'release'}}
-        name: Upload pdf to release
+        name: Upload PDF file to release
         uses: svenstaro/upload-release-action@2b9d2847a97b04d02ad5c3df2d3a27baa97ce689 # v2
         with:
           repo_token: ${{ secrets.GITHUB_TOKEN }}
           file: "*.pdf"
-          asset_name: main.pdf
           tag: ${{ github.ref }}
           overwrite: true
           file_glob: true
-          body: "PDF compiled from source"
+          body: "Compiled LaTeX document"
+
+
